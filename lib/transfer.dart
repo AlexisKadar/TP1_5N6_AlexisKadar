@@ -33,3 +33,18 @@ class ReponseConnexion {
 
   Map<String, dynamic> toJson() => _$ReponseConnexionToJson(this);
 }
+
+@JsonSerializable()
+class RequeteConnexion  {
+
+  RequeteConnexion();
+
+  String nom = "";
+
+  String motDePasse = "";
+
+
+  factory RequeteConnexion.fromJson(Map<String, dynamic> json) => _$RequeteConnexionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RequeteConnexionToJson(this);
+}

@@ -54,7 +54,11 @@ class _EcranInscriptionState extends State<EcranInscription> {
                 req.confirmationMotDePasse = _confirmPasswordController.text;
                 var reponse = await inscription(req);
                 print(reponse);
-                Navigator.pushNamed(context, '/accueil');
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/accueil',
+                      (Route<dynamic> route) => false,
+                );
               },
               child: const Text('Inscription'),
             ),

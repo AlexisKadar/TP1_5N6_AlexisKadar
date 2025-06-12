@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tp1_2363662/transfer.dart';
+
+import 'lib_http.dart';
 
 class EcranConnexion extends StatefulWidget {
   const EcranConnexion({super.key});
@@ -36,7 +39,16 @@ class _EcranConnexionState extends State<EcranConnexion> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/accueil');
+                RequeteConnexion req = RequeteConnexion();
+                req.nom = _usernameController.text;
+                req.motDePasse = _passwordController.text;
+                var reponse = connexion(req);
+                print(reponse);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/accueil',
+                      (Route<dynamic> route) => false,
+                );
               },
               child: const Text('Connexion'),
             ),
