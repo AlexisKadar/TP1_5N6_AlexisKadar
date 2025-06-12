@@ -50,3 +50,16 @@ Future<ReponseConnexion> connexion(RequeteConnexion req) async {
     throw(e);
   }
 }
+
+Future<void> ajoutTache(RequeteAjoutTache req) async {
+ try {
+  await SingletonDio.getDio().post(
+    "http://10.0.2.2:8080/tache/ajout",
+    data: req.toJson(),
+  );
+
+} catch (e){
+print(e);
+throw(e);
+}
+}

@@ -48,3 +48,18 @@ class RequeteConnexion  {
 
   Map<String, dynamic> toJson() => _$RequeteConnexionToJson(this);
 }
+
+@JsonSerializable()
+class RequeteAjoutTache  {
+
+  RequeteAjoutTache();
+
+  String nom = "";
+
+  String dateLimite = "";
+
+
+  factory RequeteAjoutTache.fromJson(Map<String, dynamic> json) => _$RequeteAjoutTacheFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RequeteAjoutTacheToJson(this);
+}

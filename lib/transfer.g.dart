@@ -32,3 +32,11 @@ RequeteConnexion _$RequeteConnexionFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$RequeteConnexionToJson(RequeteConnexion instance) =>
     <String, dynamic>{'nom': instance.nom, 'motDePasse': instance.motDePasse};
+
+RequeteAjoutTache _$RequeteAjoutTacheFromJson(Map<String, dynamic> json) =>
+    RequeteAjoutTache()
+      ..nom = json['nom'] as String
+      ..dateLimite = json['dateLimite'] as String;
+
+Map<String, dynamic> _$RequeteAjoutTacheToJson(RequeteAjoutTache instance) =>
+    <String, dynamic>{'nom': instance.nom, 'dateLimite': instance.dateLimite};

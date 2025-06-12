@@ -3,6 +3,7 @@ import 'package:tp1_2363662/ecran_connexion.dart';
 import 'package:dio/dio.dart';
 
 import 'ecran_accueil.dart';
+import 'ecran_creation.dart';
 import 'ecran_inscription.dart';
 
 void main() {
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       '/inscription': (context) => const EcranInscription(),
       '/connexion': (context) => const EcranConnexion(),
       '/accueil': (context) => const EcranAccueil(),
+      '/creation': (context) => const EcranCreation(),
     };
   }
 }
