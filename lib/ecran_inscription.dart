@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tp1_2363662/transfer.dart';
+
+import 'lib_http.dart';
 
 class EcranInscription extends StatefulWidget {
   const EcranInscription({super.key});
@@ -44,7 +47,13 @@ class _EcranInscriptionState extends State<EcranInscription> {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                RequeteInscription req = RequeteInscription();
+                req.nom = _usernameController.text;
+                req.motDePasse = _passwordController.text;
+                req.confirmationMotDePasse = _confirmPasswordController.text;
+                var reponse = await inscription(req);
+                print(reponse);
                 Navigator.pushNamed(context, '/accueil');
               },
               child: const Text('Inscription'),
