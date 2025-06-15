@@ -1,3 +1,5 @@
+import 'dart:ffi';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -56,10 +58,39 @@ class RequeteAjoutTache  {
 
   String nom = "";
 
-  String dateLimite = "";
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  DateTime dateLimite = DateTime.now();
 
 
   factory RequeteAjoutTache.fromJson(Map<String, dynamic> json) => _$RequeteAjoutTacheFromJson(json);
 
   Map<String, dynamic> toJson() => _$RequeteAjoutTacheToJson(this);
 }
+
+@JsonSerializable()
+class ReponseAccueilItem  {
+
+  ReponseAccueilItem();
+
+  String nom = "";
+
+  int id = 0;
+
+  int pourcentageAvancement = 0;
+
+  int pourcentageTemps = 0;
+
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  DateTime dateLimite = DateTime.now();
+
+
+  factory ReponseAccueilItem.fromJson(Map<String, dynamic> json) => _$ReponseAccueilItemFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReponseAccueilItemToJson(this);
+}
+
+final _dateFormatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+DateTime _fromJson(String date) => _dateFormatter.parse(date);
+
+String _toJson(DateTime date) => _dateFormatter.format(date);

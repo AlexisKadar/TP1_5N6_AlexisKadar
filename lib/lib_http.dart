@@ -63,3 +63,20 @@ print(e);
 throw(e);
 }
 }
+
+Future<List<ReponseAccueilItem>> accueil() async {
+  try {
+    var reponse = await SingletonDio.getDio().get(
+      "http://10.0.2.2:8080/tache/accueil"
+    );
+
+    return (reponse.data as List)
+        .map((item) => ReponseAccueilItem.fromJson(item))
+        .toList();
+
+  } catch (e){
+    print(e);
+    throw(e);
+  }
+}
+

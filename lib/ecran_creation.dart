@@ -29,16 +29,16 @@ class _EcranCreationState extends State<EcranCreation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Créer une tâche')),
+      appBar: AppBar(title: const Text('Créer une tâche')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _nomController,
-              decoration: InputDecoration(labelText: 'Nom de la tâche'),
+              decoration: const InputDecoration(labelText: 'Nom de la tâche'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
@@ -50,36 +50,23 @@ class _EcranCreationState extends State<EcranCreation> {
                 ),
                 TextButton(
                   onPressed: () => _selectDate(context),
-                  child: Text('Choisir la date'),
+                  child: const Text('Choisir la date'),
                 ),
               ],
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
                 RequeteAjoutTache req = RequeteAjoutTache();
                 req.nom = _nomController.text;
-                req.dateLimite = _dateEcheance != null
-                    ? '${_dateEcheance!.year}-${_dateEcheance!.month.toString().padLeft(2, '0')}-${_dateEcheance!.day.toString().padLeft(2, '0')}'
-                    : '';
+                req.dateLimite = _dateEcheance ?? DateTime.now(); // Utilisation directe de DateTime
                 Navigator.pushNamed(context, '/accueil');
               },
-              child: Text('Ajouter'),
+              child: const Text('Ajouter'),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-// Remplace ceci par ton widget d'accueil réel
-class Accueil extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Accueil')),
-      body: Center(child: Text('Bienvenue sur l\'écran d\'accueil')),
     );
   }
 }

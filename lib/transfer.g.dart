@@ -36,7 +36,27 @@ Map<String, dynamic> _$RequeteConnexionToJson(RequeteConnexion instance) =>
 RequeteAjoutTache _$RequeteAjoutTacheFromJson(Map<String, dynamic> json) =>
     RequeteAjoutTache()
       ..nom = json['nom'] as String
-      ..dateLimite = json['dateLimite'] as String;
+      ..dateLimite = _fromJson(json['dateLimite'] as String);
 
 Map<String, dynamic> _$RequeteAjoutTacheToJson(RequeteAjoutTache instance) =>
-    <String, dynamic>{'nom': instance.nom, 'dateLimite': instance.dateLimite};
+    <String, dynamic>{
+      'nom': instance.nom,
+      'dateLimite': _toJson(instance.dateLimite),
+    };
+
+ReponseAccueilItem _$ReponseAccueilItemFromJson(Map<String, dynamic> json) =>
+    ReponseAccueilItem()
+      ..nom = json['nom'] as String
+      ..id = (json['id'] as num).toInt()
+      ..pourcentageAvancement = (json['pourcentageAvancement'] as num).toInt()
+      ..pourcentageTemps = (json['pourcentageTemps'] as num).toInt()
+      ..dateLimite = _fromJson(json['dateLimite'] as String);
+
+Map<String, dynamic> _$ReponseAccueilItemToJson(ReponseAccueilItem instance) =>
+    <String, dynamic>{
+      'nom': instance.nom,
+      'id': instance.id,
+      'pourcentageAvancement': instance.pourcentageAvancement,
+      'pourcentageTemps': instance.pourcentageTemps,
+      'dateLimite': _toJson(instance.dateLimite),
+    };
