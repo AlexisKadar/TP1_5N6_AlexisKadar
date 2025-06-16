@@ -86,6 +86,15 @@ class _EcranConsultationState extends State<EcranConsultation> {
                 // Optionally, save the updated value to the server here
               },
             ),
+            Center(
+            child: TextButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(context, '/accueil',
+                      (Route<dynamic> route) => false,);
+              },
+              child: const Text('Retour à l\'accueil'),
+            )
+            ),
           ],
         ),
       ),

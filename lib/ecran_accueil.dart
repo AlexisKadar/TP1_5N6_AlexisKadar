@@ -68,7 +68,7 @@ class _EcranAccueilState extends State<EcranAccueil> {
                 ],
               ),
               onTap: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => EcranConsultation(tacheId: tache.id),
