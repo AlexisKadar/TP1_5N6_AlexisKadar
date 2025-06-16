@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tp1_2363662/transfer.dart';
 
+import 'lib_http.dart';
+
 class EcranCreation extends StatefulWidget {
   const EcranCreation({super.key});
 
@@ -60,7 +62,12 @@ class _EcranCreationState extends State<EcranCreation> {
                 RequeteAjoutTache req = RequeteAjoutTache();
                 req.nom = _nomController.text;
                 req.dateLimite = _dateEcheance ?? DateTime.now(); // Utilisation directe de DateTime
-                Navigator.pushNamed(context, '/accueil');
+                ajoutTache(req);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/accueil',
+                      (Route<dynamic> route) => false,
+                );
               },
               child: const Text('Ajouter'),
             ),

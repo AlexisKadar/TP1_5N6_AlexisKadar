@@ -60,3 +60,20 @@ Map<String, dynamic> _$ReponseAccueilItemToJson(ReponseAccueilItem instance) =>
       'pourcentageTemps': instance.pourcentageTemps,
       'dateLimite': _toJson(instance.dateLimite),
     };
+
+ReponseDetailTache _$ReponseDetailTacheFromJson(Map<String, dynamic> json) =>
+    ReponseDetailTache()
+      ..id = (json['id'] as num).toInt()
+      ..nom = json['nom'] as String
+      ..dateLimite = _fromJson(json['dateLimite'] as String)
+      ..pourcentageAvancement = (json['pourcentageAvancement'] as num).toInt()
+      ..pourcentageTemps = (json['pourcentageTemps'] as num).toInt();
+
+Map<String, dynamic> _$ReponseDetailTacheToJson(ReponseDetailTache instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'nom': instance.nom,
+      'dateLimite': _toJson(instance.dateLimite),
+      'pourcentageAvancement': instance.pourcentageAvancement,
+      'pourcentageTemps': instance.pourcentageTemps,
+    };

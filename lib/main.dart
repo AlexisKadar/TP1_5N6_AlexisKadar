@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tp1_2363662/ecran_connexion.dart';
 import 'package:dio/dio.dart';
+import 'package:tp1_2363662/ecran_consultation.dart';
 
 import 'ecran_accueil.dart';
 import 'ecran_creation.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       '/connexion': (context) => const EcranConnexion(),
       '/accueil': (context) => const EcranAccueil(),
       '/creation': (context) => const EcranCreation(),
+      '/consultation': (context) => const EcranConsultation(tacheId: 0),
     };
   }
 }

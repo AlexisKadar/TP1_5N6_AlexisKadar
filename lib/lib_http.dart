@@ -5,10 +5,6 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 
 final dio = Dio();
-void getHttp() async {
-  final response = await dio.get('https://dart.dev');
-  print(response);
-}
 
 class SingletonDio {
   static var cookieManager = CookieManager(CookieJar());
@@ -73,6 +69,32 @@ Future<List<ReponseAccueilItem>> accueil() async {
     return (reponse.data as List)
         .map((item) => ReponseAccueilItem.fromJson(item))
         .toList();
+
+  } catch (e){
+    print(e);
+    throw(e);
+  }
+}
+
+Future<ReponseDetailTache> consultation(int id) async {
+  try {
+    var reponse = await SingletonDio.getDio().get(
+        "http://10.0.2.2:8080/tache/detail/$id"
+    );
+
+    return ReponseDetailTache.fromJson(reponse.data);
+
+  } catch (e){
+    print(e);
+    throw(e);
+  }
+}
+
+Future<void> updateProgress(int id, int valeur) async {
+  try {
+    var reponse = await SingletonDio.getDio().get(
+        "http://10.0.2.2:8080/tache/progres/$id/$valeur"
+    );
 
   } catch (e){
     print(e);

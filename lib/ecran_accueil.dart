@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'ecran_consultation.dart';
 import 'lib_http.dart';
 import 'transfer.dart';
 
@@ -70,7 +71,7 @@ class _EcranAccueilState extends State<EcranAccueil> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const EcranConsultation(),
+                    builder: (context) => EcranConsultation(tacheId: tache.id),
                   ),
                 );
               },
@@ -83,22 +84,6 @@ class _EcranAccueilState extends State<EcranAccueil> {
           Navigator.pushNamed(context, '/creation');
         },
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class EcranConsultation extends StatelessWidget {
-  const EcranConsultation({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Consultation de la tâche'),
-      ),
-      body: const Center(
-        child: Text('Écran de consultation (placeholder)'),
       ),
     );
   }

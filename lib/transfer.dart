@@ -89,6 +89,29 @@ class ReponseAccueilItem  {
   Map<String, dynamic> toJson() => _$ReponseAccueilItemToJson(this);
 }
 
+
+@JsonSerializable()
+class ReponseDetailTache {
+
+  ReponseDetailTache();
+
+  int id = 0;
+
+  String nom = "";
+
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  DateTime dateLimite = DateTime.now();
+
+  int pourcentageAvancement = 0;
+
+  int pourcentageTemps = 0;
+
+  factory ReponseDetailTache.fromJson(Map<String, dynamic> json) => _$ReponseDetailTacheFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReponseDetailTacheToJson(this);
+}
+
+
 final _dateFormatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 DateTime _fromJson(String date) => _dateFormatter.parse(date);
