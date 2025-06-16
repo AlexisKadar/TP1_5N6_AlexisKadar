@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tp1_2363662/transfer.dart';
+import 'package:tp1_2363662/user_singleton.dart';
 
 import 'lib_http.dart';
 
@@ -54,6 +55,7 @@ class _EcranInscriptionState extends State<EcranInscription> {
                 req.confirmationMotDePasse = _confirmPasswordController.text;
                 var reponse = await inscription(req);
                 print(reponse);
+                UserSingleton().username = _usernameController.text;
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   '/accueil',

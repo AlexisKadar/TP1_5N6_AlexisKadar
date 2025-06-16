@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tp1_2363662/transfer.dart';
+import 'package:tp1_2363662/widgets/app_drawer.dart';
 
 import 'lib_http.dart';
 
@@ -32,6 +33,7 @@ class _EcranCreationState extends State<EcranCreation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Créer une tâche')),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

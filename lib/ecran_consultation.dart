@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tp1_2363662/widgets/app_drawer.dart';
 import 'lib_http.dart';
 import 'transfer.dart';
 
@@ -42,6 +43,7 @@ class _EcranConsultationState extends State<EcranConsultation> {
       appBar: AppBar(
         title: const Text('Consultation de la tâche'),
       ),
+      drawer: const AppDrawer(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(

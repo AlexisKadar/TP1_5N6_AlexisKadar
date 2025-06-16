@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tp1_2363662/widgets/app_drawer.dart';
 import 'ecran_consultation.dart';
 import 'lib_http.dart';
 import 'transfer.dart';
@@ -19,18 +20,19 @@ class _EcranAccueilState extends State<EcranAccueil> {
   @override
   void initState() {
     super.initState();
-    _loadTaches();
+    getList();
   }
 
-  Future<void> _loadTaches() async {
+  void getList() async {
     try {
-      final response = await accueil();
+      _taches = await accueil();
       setState(() {
-        _taches = response;
         _isLoading = false;
       });
     } catch (e) {
       print('Error fetching tasks: $e');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Erreur reseau')));
       setState(() {
         _isLoading = false;
       });
@@ -47,6 +49,7 @@ class _EcranAccueilState extends State<EcranAccueil> {
       appBar: AppBar(
         title: const Text('Accueil'),
       ),
+      drawer: const AppDrawer(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _taches.isEmpty

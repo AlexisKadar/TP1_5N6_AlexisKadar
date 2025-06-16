@@ -4,7 +4,6 @@ import 'package:tp1_2363662/transfer.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 
-final dio = Dio();
 
 class SingletonDio {
   static var cookieManager = CookieManager(CookieJar());
@@ -101,4 +100,17 @@ Future<void> updateProgress(int id, int valeur) async {
     throw(e);
   }
 }
+
+Future<void> deconnexion() async {
+  try {
+    var reponse = await SingletonDio.getDio().post(
+        "http://10.0.2.2:8080/id/deconnexion"
+    );
+
+  } catch (e){
+    print(e);
+    throw(e);
+  }
+}
+
 
