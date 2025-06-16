@@ -60,11 +60,11 @@ class _EcranCreationState extends State<EcranCreation> {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 RequeteAjoutTache req = RequeteAjoutTache();
                 req.nom = _nomController.text;
                 req.dateLimite = _dateEcheance ?? DateTime.now(); // Utilisation directe de DateTime
-                ajoutTache(req);
+                await ajoutTache(req);
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   '/accueil',

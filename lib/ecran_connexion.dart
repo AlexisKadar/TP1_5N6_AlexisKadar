@@ -15,6 +15,20 @@ class _EcranConnexionState extends State<EcranConnexion> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  Future<void> faireConnexion() async {
+    RequeteConnexion req = RequeteConnexion();
+    req.nom = _usernameController.text;
+    req.motDePasse = _passwordController.text;
+    var reponse = await connexion(req);
+    print(reponse);
+    UserSingleton().username = _usernameController.text;
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/accueil',
+          (Route<dynamic> route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,19 +53,7 @@ class _EcranConnexionState extends State<EcranConnexion> {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () {
-                RequeteConnexion req = RequeteConnexion();
-                req.nom = _usernameController.text;
-                req.motDePasse = _passwordController.text;
-                var reponse = connexion(req);
-                print(reponse);
-                UserSingleton().username = _usernameController.text;
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/accueil',
-                      (Route<dynamic> route) => false,
-                );
-              },
+              onPressed: faireConnexion,
               child: const Text('Connexion'),
             ),
             TextButton(
