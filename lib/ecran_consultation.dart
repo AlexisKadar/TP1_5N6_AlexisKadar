@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tp1_2363662/widgets/app_drawer.dart';
 import 'lib_http.dart';
 import 'transfer.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EcranConsultation extends StatefulWidget {
   final int tacheId;
@@ -15,6 +19,10 @@ class EcranConsultation extends StatefulWidget {
 class _EcranConsultationState extends State<EcranConsultation> {
   late ReponseDetailTache _tache;
   bool _isLoading = true;
+
+  String imagePath = "";
+  String imageURL = "";
+  XFile? pickedImage;
 
   @override
   void initState() {
@@ -35,6 +43,34 @@ class _EcranConsultationState extends State<EcranConsultation> {
         _isLoading = false;
       });
     }
+  }
+
+  void getImage() async{
+    ImagePicker imagePicker = ImagePicker();
+    pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+    imagePath = pickedImage!.path;
+    setState(() {
+
+    });
+  }
+  
+  void sendImage() async {
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(pickedImage!.path, filename: pickedImage!.name),
+      "taskID": widget.tacheId,
+    });
+
+
+    Dio dio = Dio();
+    var response = await dio.post("http://10.0.2.2:8080/fichier", data: formData);
+
+    String id = response.data as String;
+
+    imageURL = "http://10.0.2.2:8080/fichier/$id";
+
+    setState(() {
+
+    });
   }
 
   @override
@@ -87,6 +123,19 @@ class _EcranConsultationState extends State<EcranConsultation> {
                 }
                 // Optionally, save the updated value to the server here
               },
+            ),
+            (imagePath == "")
+                ? Text("Sélectionner une image")
+                : Image.file(File(imagePath)),
+            ElevatedButton(onPressed: sendImage, child: Text("Envoyer l'image")),
+            (imageURL == "")
+                ? Text("Envoyer une image en premier")
+                : Image.network(imageURL),
+            Center(
+                child: TextButton(
+                  onPressed: getImage,
+                  child: const Text('Importer image'),
+                )
             ),
             Center(
             child: TextButton(
