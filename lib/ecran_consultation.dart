@@ -17,12 +17,13 @@ class EcranConsultation extends StatefulWidget {
 }
 
 class _EcranConsultationState extends State<EcranConsultation> {
-  late ReponseDetailTache _tache;
+  late ReponseDetailTacheAvecPhoto _tache;
   bool _isLoading = true;
 
   String imagePath = "";
   String imageURL = "";
   XFile? pickedImage;
+
 
   @override
   void initState() {
@@ -35,6 +36,9 @@ class _EcranConsultationState extends State<EcranConsultation> {
       final response = await consultation(widget.tacheId);
       setState(() {
         _tache = response;
+        if(_tache.photoId != 0) {
+          imageURL = "http://10.0.2.2:8080/fichier/${_tache.photoId.toString()}";
+        }
         _isLoading = false;
       });
     } catch (e) {
@@ -45,32 +49,28 @@ class _EcranConsultationState extends State<EcranConsultation> {
     }
   }
 
-  void getImage() async{
+  void getImageAndSend() async {
     ImagePicker imagePicker = ImagePicker();
     pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     imagePath = pickedImage!.path;
-    setState(() {
 
-    });
-  }
-  
-  void sendImage() async {
+
     FormData formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(pickedImage!.path, filename: pickedImage!.name),
       "taskID": widget.tacheId,
     });
 
-
     Dio dio = Dio();
     var response = await dio.post("http://10.0.2.2:8080/fichier", data: formData);
 
-    String id = response.data as String;
+    String id = response.data;
 
     imageURL = "http://10.0.2.2:8080/fichier/$id";
 
     setState(() {
 
     });
+
   }
 
   @override
@@ -124,16 +124,17 @@ class _EcranConsultationState extends State<EcranConsultation> {
                 // Optionally, save the updated value to the server here
               },
             ),
-            (imagePath == "")
-                ? Text("Sélectionner une image")
-                : Image.file(File(imagePath)),
-            ElevatedButton(onPressed: sendImage, child: Text("Envoyer l'image")),
-            (imageURL == "")
-                ? Text("Envoyer une image en premier")
-                : Image.network(imageURL),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 28.0),
+              child: Center(
+                child: (imageURL == "")
+                    ? Text("Importer une image en premier")
+                    : Image.network(imageURL),
+              ),
+            ),
             Center(
-                child: TextButton(
-                  onPressed: getImage,
+                child: ElevatedButton(
+                  onPressed: getImageAndSend,
                   child: const Text('Importer image'),
                 )
             ),

@@ -75,13 +75,13 @@ Future<List<ReponseAccueilItem>> accueil() async {
   }
 }
 
-Future<ReponseDetailTache> consultation(int id) async {
+  Future<ReponseDetailTacheAvecPhoto> consultation(int id) async {
   try {
     var reponse = await SingletonDio.getDio().get(
-        "http://10.0.2.2:8080/tache/detail/$id"
+        "http://10.0.2.2:8080/api/detail/photo/$id"
     );
 
-    return ReponseDetailTache.fromJson(reponse.data);
+    return ReponseDetailTacheAvecPhoto.fromJson(reponse.data);
 
   } catch (e){
     print(e);

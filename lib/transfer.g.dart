@@ -77,3 +77,24 @@ Map<String, dynamic> _$ReponseDetailTacheToJson(ReponseDetailTache instance) =>
       'pourcentageAvancement': instance.pourcentageAvancement,
       'pourcentageTemps': instance.pourcentageTemps,
     };
+
+ReponseDetailTacheAvecPhoto _$ReponseDetailTacheAvecPhotoFromJson(
+  Map<String, dynamic> json,
+) => ReponseDetailTacheAvecPhoto()
+  ..id = (json['id'] as num).toInt()
+  ..nom = json['nom'] as String
+  ..dateLimite = _fromJson(json['dateLimite'] as String)
+  ..pourcentageAvancement = (json['pourcentageAvancement'] as num).toInt()
+  ..pourcentageTemps = (json['pourcentageTemps'] as num).toInt()
+  ..photoId = (json['photoId'] as num).toInt();
+
+Map<String, dynamic> _$ReponseDetailTacheAvecPhotoToJson(
+  ReponseDetailTacheAvecPhoto instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'nom': instance.nom,
+  'dateLimite': _toJson(instance.dateLimite),
+  'pourcentageAvancement': instance.pourcentageAvancement,
+  'pourcentageTemps': instance.pourcentageTemps,
+  'photoId': instance.photoId,
+};

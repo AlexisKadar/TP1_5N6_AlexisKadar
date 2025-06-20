@@ -111,9 +111,34 @@ class ReponseDetailTache {
   Map<String, dynamic> toJson() => _$ReponseDetailTacheToJson(this);
 }
 
+@JsonSerializable()
+class ReponseDetailTacheAvecPhoto {
+
+  ReponseDetailTacheAvecPhoto();
+
+  int id = 0;
+
+  String nom = "";
+
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  DateTime dateLimite = DateTime.now();
+
+  int pourcentageAvancement = 0;
+
+  int pourcentageTemps = 0;
+
+
+  int photoId = 0;
+
+  factory ReponseDetailTacheAvecPhoto.fromJson(Map<String, dynamic> json) => _$ReponseDetailTacheAvecPhotoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReponseDetailTacheAvecPhotoToJson(this);
+}
+
 
 final _dateFormatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 DateTime _fromJson(String date) => _dateFormatter.parse(date);
 
 String _toJson(DateTime date) => _dateFormatter.format(date);
+
