@@ -91,6 +91,30 @@ class ReponseAccueilItem  {
 
 
 @JsonSerializable()
+class ReponseAccueilItemAvecPhoto  {
+
+  ReponseAccueilItemAvecPhoto();
+
+  String nom = "";
+
+  int id = 0;
+
+  int pourcentageAvancement = 0;
+
+  int pourcentageTemps = 0;
+
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  DateTime dateLimite = DateTime.now();
+
+  int idPhoto = 0;
+
+  factory ReponseAccueilItemAvecPhoto.fromJson(Map<String, dynamic> json) => _$ReponseAccueilItemAvecPhotoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReponseAccueilItemAvecPhotoToJson(this);
+}
+
+
+@JsonSerializable()
 class ReponseDetailTache {
 
   ReponseDetailTache();

@@ -59,14 +59,14 @@ throw(e);
 }
 }
 
-Future<List<ReponseAccueilItem>> accueil() async {
+Future<List<ReponseAccueilItemAvecPhoto>> accueil() async {
   try {
     var reponse = await SingletonDio.getDio().get(
-      "http://10.0.2.2:8080/tache/accueil"
+      "http://10.0.2.2:8080/api/accueil/photo"
     );
 
     return (reponse.data as List)
-        .map((item) => ReponseAccueilItem.fromJson(item))
+        .map((item) => ReponseAccueilItemAvecPhoto.fromJson(item))
         .toList();
 
   } catch (e){

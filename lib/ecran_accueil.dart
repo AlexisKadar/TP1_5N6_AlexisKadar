@@ -13,9 +13,11 @@ class EcranAccueil extends StatefulWidget {
 }
 
 class _EcranAccueilState extends State<EcranAccueil> {
-  List<ReponseAccueilItem> _taches = [];
+  List<ReponseAccueilItemAvecPhoto> _taches = [];
   bool _isLoading = true;
   final _dateFormatter = DateFormat('dd/MM/yyyy');
+  String imageURL = "http://10.0.2.2:8080/fichier/";
+
 
   @override
   void initState() {
@@ -68,6 +70,28 @@ class _EcranAccueilState extends State<EcranAccueil> {
                   Text('Avancement : ${tache.pourcentageAvancement}%'),
                   Text('Temps écoulé : ${tache.pourcentageTemps}%'),
                   Text('Date limite : ${_formatDate(tache.dateLimite)}'),
+                  (tache.idPhoto == 0)
+                      ? Text("Aucune image")
+                      : Image.network(
+                    imageURL + tache.idPhoto.toString(),
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      );
+                    },
+                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                      return const Center(
+                        child: Text('Erreur de chargement de l\'image'),
+                      );
+                    },
+                  ),
                 ],
               ),
               onTap: () {
