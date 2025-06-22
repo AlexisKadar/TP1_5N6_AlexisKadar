@@ -19,6 +19,7 @@ class EcranConsultation extends StatefulWidget {
 class _EcranConsultationState extends State<EcranConsultation> {
   late ReponseDetailTacheAvecPhoto _tache;
   bool _isLoading = true;
+  bool _isImageLoading = false;
 
   String imagePath = "";
   String imageURL = "";
@@ -50,26 +51,43 @@ class _EcranConsultationState extends State<EcranConsultation> {
   }
 
   void getImageAndSend() async {
-    ImagePicker imagePicker = ImagePicker();
-    pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
-    imagePath = pickedImage!.path;
-
-
-    FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(pickedImage!.path, filename: pickedImage!.name),
-      "taskID": widget.tacheId,
-    });
-
-    Dio dio = Dio();
-    var response = await dio.post("http://10.0.2.2:8080/fichier", data: formData);
-
-    String id = response.data;
-
-    imageURL = "http://10.0.2.2:8080/fichier/$id";
-
+    if (_isLoading) return;
     setState(() {
-
+      _isLoading = true;
     });
+
+    try {
+      ImagePicker imagePicker = ImagePicker();
+      pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+      imagePath = pickedImage!.path;
+
+
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(
+            pickedImage!.path, filename: pickedImage!.name),
+        "taskID": widget.tacheId,
+      });
+
+      Dio dio = Dio();
+      var response = await dio.post(
+          "http://10.0.2.2:8080/fichier", data: formData);
+
+      String id = response.data;
+
+      imageURL = "http://10.0.2.2:8080/fichier/$id";
+
+      setState(() {
+
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erreur lors de l\'importation de l\'image')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
 
   }
 
@@ -129,10 +147,35 @@ class _EcranConsultationState extends State<EcranConsultation> {
               child: Center(
                 child: (imageURL == "")
                     ? Text("Importer une image en premier")
-                    : Image.network(imageURL),
+                    : SizedBox(
+                  width: 300,
+                  height: 250,
+                  child: Image.network(imageURL,
+                    fit: BoxFit.contain,
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      );
+                    },
+                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                      return const Center(
+                        child: Text('Erreur de chargement de l\'image'),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
-            Center(
+            _isImageLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Center(
                 child: ElevatedButton(
                   onPressed: getImageAndSend,
                   child: const Text('Importer image'),

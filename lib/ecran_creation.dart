@@ -14,6 +14,7 @@ class EcranCreation extends StatefulWidget {
 class _EcranCreationState extends State<EcranCreation> {
   final TextEditingController _nomController = TextEditingController();
   DateTime? _dateEcheance;
+  bool _isLoading = false;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -25,6 +26,33 @@ class _EcranCreationState extends State<EcranCreation> {
     if (picked != null) {
       setState(() {
         _dateEcheance = picked;
+      });
+    }
+  }
+
+  Future<void> ajouterLaTache() async {
+    if (_isLoading) return;
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      RequeteAjoutTache req = RequeteAjoutTache();
+      req.nom = _nomController.text;
+      req.dateLimite = _dateEcheance ?? DateTime.now(); // Utilisation directe de DateTime
+      await ajoutTache(req);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/accueil',
+            (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erreur lors de l\'ajout de la tâche')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
       });
     }
   }
@@ -59,18 +87,10 @@ class _EcranCreationState extends State<EcranCreation> {
               ],
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () async {
-                RequeteAjoutTache req = RequeteAjoutTache();
-                req.nom = _nomController.text;
-                req.dateLimite = _dateEcheance ?? DateTime.now(); // Utilisation directe de DateTime
-                await ajoutTache(req);
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/accueil',
-                      (Route<dynamic> route) => false,
-                );
-              },
+            _isLoading
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
+              onPressed: ajouterLaTache,
               child: const Text('Ajouter'),
             ),
           ],

@@ -15,6 +15,37 @@ class _EcranInscriptionState extends State<EcranInscription> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  bool _isLoading = false;
+
+  Future<void> faireInscription() async {
+    if (_isLoading) return;
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      RequeteInscription req = RequeteInscription();
+      req.nom = _usernameController.text;
+      req.motDePasse = _passwordController.text;
+      req.confirmationMotDePasse = _confirmPasswordController.text;
+      var reponse = await inscription(req);
+      print(reponse);
+      UserSingleton().username = _usernameController.text;
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/accueil',
+            (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erreur lors de l\'inscription')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,21 +78,10 @@ class _EcranInscriptionState extends State<EcranInscription> {
               obscureText: true,
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () async {
-                RequeteInscription req = RequeteInscription();
-                req.nom = _usernameController.text;
-                req.motDePasse = _passwordController.text;
-                req.confirmationMotDePasse = _confirmPasswordController.text;
-                var reponse = await inscription(req);
-                print(reponse);
-                UserSingleton().username = _usernameController.text;
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/accueil',
-                      (Route<dynamic> route) => false,
-                );
-              },
+            _isLoading
+              ? const CircularProgressIndicator()
+              : ElevatedButton(
+              onPressed: faireInscription,
               child: const Text('Inscription'),
             ),
           ],

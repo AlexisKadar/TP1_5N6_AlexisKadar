@@ -14,19 +14,35 @@ class EcranConnexion extends StatefulWidget {
 class _EcranConnexionState extends State<EcranConnexion> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   Future<void> faireConnexion() async {
-    RequeteConnexion req = RequeteConnexion();
-    req.nom = _usernameController.text;
-    req.motDePasse = _passwordController.text;
-    var reponse = await connexion(req);
-    print(reponse);
-    UserSingleton().username = _usernameController.text;
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/accueil',
-          (Route<dynamic> route) => false,
-    );
+    if (_isLoading) return;
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      RequeteConnexion req = RequeteConnexion();
+      req.nom = _usernameController.text;
+      req.motDePasse = _passwordController.text;
+      var reponse = await connexion(req);
+      print(reponse);
+      UserSingleton().username = _usernameController.text;
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/accueil',
+            (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erreur lors de la connexion')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -52,7 +68,9 @@ class _EcranConnexionState extends State<EcranConnexion> {
               obscureText: true,
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
+            _isLoading
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
               onPressed: faireConnexion,
               child: const Text('Connexion'),
             ),
