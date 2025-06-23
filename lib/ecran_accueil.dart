@@ -15,6 +15,7 @@ class EcranAccueil extends StatefulWidget {
 class _EcranAccueilState extends State<EcranAccueil> {
   List<ReponseAccueilItemAvecPhoto> _taches = [];
   bool _isLoading = true;
+  bool _Error = false;
   final _dateFormatter = DateFormat('dd/MM/yyyy');
   String imageURL = "http://10.0.2.2:8080/fichier/";
 
@@ -30,6 +31,7 @@ class _EcranAccueilState extends State<EcranAccueil> {
       _taches = await accueil();
       setState(() {
         _isLoading = false;
+        _Error = false;
       });
     } catch (e) {
       print('Error fetching tasks: $e');
@@ -37,6 +39,7 @@ class _EcranAccueilState extends State<EcranAccueil> {
           .showSnackBar(const SnackBar(content: Text('Erreur reseau')));
       setState(() {
         _isLoading = false;
+        _Error = true;
       });
     }
   }
@@ -54,6 +57,27 @@ class _EcranAccueilState extends State<EcranAccueil> {
       drawer: const AppDrawer(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
+          : _Error
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Erreur réseau. Veuillez réessayer.'),
+            const SizedBox(height: 16),
+            _isLoading
+            ? const CircularProgressIndicator()
+            : ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _isLoading = true;
+                });
+                getList();
+              },
+              child: const Text('Recharger'),
+            ),
+          ],
+        ),
+      )
           : _taches.isEmpty
           ? const Center(child: Text('Aucune tâche disponible'))
           : ListView.builder(

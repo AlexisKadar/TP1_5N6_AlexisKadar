@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tp1_2363662/transfer.dart';
 import 'package:tp1_2363662/user_singleton.dart';
@@ -34,10 +35,17 @@ class _EcranConnexionState extends State<EcranConnexion> {
         '/accueil',
             (Route<dynamic> route) => false,
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
+    } on DioError catch (e) {
+      if (e.response?.data == "MauvaisNomOuMotDePasse") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Nom d\'utilisateur ou mot de passe incorrect')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Erreur lors de la connexion')),
-      );
+        );
+      }
+
     } finally {
       setState(() {
         _isLoading = false;

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tp1_2363662/transfer.dart';
 import 'package:tp1_2363662/user_singleton.dart';
@@ -36,10 +37,40 @@ class _EcranInscriptionState extends State<EcranInscription> {
         '/accueil',
             (Route<dynamic> route) => false,
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erreur lors de l\'inscription')),
-      );
+    } on DioError catch (e) {
+      if(e.response?.data == "MotsDePasseDifferents") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Les mots de passe ne correspondent pas')),
+        );
+      } else if (e.response?.data == "NomDejaPris") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Nom d\'utilisateur déjà pris')),
+        );
+      }  else if (e.response?.data == "NomTropCourt") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Nom d\'utilisateur est trop court')),
+        );
+      }
+      else if (e.response?.data == "NomTropLong") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Nom d\'utilisateur est trop long')),
+        );
+      }
+      else if (e.response?.data == "MotDePasseTropCourt") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Mot de passe est trop court')),
+        );
+      }
+      else if (e.response?.data == "MotDePasseTropLong") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Mot de passe est trop long')),
+        );
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erreur lors de l\'inscription, vérifiez votre connexion')),
+        );
+      }
     } finally {
       setState(() {
         _isLoading = false;
