@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tp1_2363662/widgets/app_drawer.dart';
@@ -18,7 +20,6 @@ class _EcranAccueilState extends State<EcranAccueil> with WidgetsBindingObserver
   bool _Error = false;
   final _dateFormatter = DateFormat('dd/MM/yyyy');
   String imageURL = "http://10.0.2.2:8080/fichier/";
-
 
   @override
   void initState() {
@@ -114,26 +115,17 @@ class _EcranAccueilState extends State<EcranAccueil> with WidgetsBindingObserver
                   Text('Date limite : ${_formatDate(tache.dateLimite)}'),
                   (tache.idPhoto == 0)
                       ? Text("Aucune image")
-                      : Image.network(
-                    imageURL + tache.idPhoto.toString(),
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                              : null,
-                        ),
-                      );
-                    },
-                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                      return const Center(
-                        child: Text('Erreur de chargement de l\'image'),
-                      );
-                    },
-                  ),
+                      : SizedBox(
+                    width: 350,
+                    height: 250,
+                    child: CachedNetworkImage(
+                      imageUrl: imageURL + tache.idPhoto.toString() + "?largeur=350",
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      fit: BoxFit.contain,
+                    ),
+                  )
+
                 ],
               ),
               onTap: () {

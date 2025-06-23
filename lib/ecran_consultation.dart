@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tp1_2363662/widgets/app_drawer.dart';
@@ -167,25 +168,11 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
                     : SizedBox(
                   width: 300,
                   height: 250,
-                  child: Image.network(imageURL,
+                  child: CachedNetworkImage(
+                    imageUrl: imageURL,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                     fit: BoxFit.contain,
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                              : null,
-                        ),
-                      );
-                    },
-                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                      return const Center(
-                        child: Text('Erreur de chargement de l\'image'),
-                      );
-                    },
                   ),
                 ),
               ),
