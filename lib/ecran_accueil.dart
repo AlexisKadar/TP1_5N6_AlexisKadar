@@ -12,7 +12,7 @@ class EcranAccueil extends StatefulWidget {
   State<EcranAccueil> createState() => _EcranAccueilState();
 }
 
-class _EcranAccueilState extends State<EcranAccueil> {
+class _EcranAccueilState extends State<EcranAccueil> with WidgetsBindingObserver {
   List<ReponseAccueilItemAvecPhoto> _taches = [];
   bool _isLoading = true;
   bool _Error = false;
@@ -23,8 +23,26 @@ class _EcranAccueilState extends State<EcranAccueil> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     getList();
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setState(() {
+        _isLoading = true;
+      });
+      getList();
+    }
+  }
+
 
   void getList() async {
     try {

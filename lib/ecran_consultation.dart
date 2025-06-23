@@ -16,7 +16,7 @@ class EcranConsultation extends StatefulWidget {
   State<EcranConsultation> createState() => _EcranConsultationState();
 }
 
-class _EcranConsultationState extends State<EcranConsultation> {
+class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindingObserver {
   late ReponseDetailTacheAvecPhoto _tache;
   bool _isLoading = true;
   bool _isImageLoading = false;
@@ -29,7 +29,24 @@ class _EcranConsultationState extends State<EcranConsultation> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadTacheDetails();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setState(() {
+        _isLoading = true;
+      });
+      _loadTacheDetails();
+    }
   }
 
   Future<void> _loadTacheDetails() async {

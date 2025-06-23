@@ -103,7 +103,7 @@ Future<void> updateProgress(int id, int valeur) async {
 
 Future<void> deconnexion() async {
   try {
-    var reponse = await SingletonDio.getDio().post(
+    await SingletonDio.getDio().post(
         "http://10.0.2.2:8080/id/deconnexion"
     );
 
