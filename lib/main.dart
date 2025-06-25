@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tp1_2363662/ecran_connexion.dart';
 import 'package:dio/dio.dart';
 import 'package:tp1_2363662/ecran_consultation.dart';
@@ -6,6 +7,7 @@ import 'package:tp1_2363662/ecran_consultation.dart';
 import 'ecran_accueil.dart';
 import 'ecran_creation.dart';
 import 'ecran_inscription.dart';
+import 'generated/l10n.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,9 +20,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: const Locale('fr'),
       title: 'Tp1',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const EcranConnexion(),

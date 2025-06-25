@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../generated/l10n.dart';
 import '../lib_http.dart';
 import '../user_singleton.dart';
 
@@ -7,7 +8,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final username = UserSingleton().username ?? "Utilisateur";
+    final username = UserSingleton().username ?? (S.of(context).User);
 
     return Drawer(
       child: ListView(
@@ -19,7 +20,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.home),
-            title: const Text('Accueil'),
+            title: Text((S.of(context).Accueil)),
             onTap: () {
               Navigator.pushNamedAndRemoveUntil(
                 context,
@@ -30,14 +31,14 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.add),
-            title: const Text('Ajout de tâche'),
+            title: Text((S.of(context).BoutonAjouterTache)),
             onTap: () {
               Navigator.pushNamed(context, '/creation');
             },
           ),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('Déconnexion'),
+            title: Text((S.of(context).Deconnexion)),
             onTap: () {
               deconnexion();
               Navigator.pushNamedAndRemoveUntil(

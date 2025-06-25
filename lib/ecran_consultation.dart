@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tp1_2363662/widgets/app_drawer.dart';
+import 'generated/l10n.dart';
 import 'lib_http.dart';
 import 'transfer.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +27,7 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
   String imagePath = "";
   String imageURL = "";
   XFile? pickedImage;
+  final _dateFormatter = DateFormat('dd/MM/yyyy');
 
 
   @override
@@ -68,6 +71,10 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
     }
   }
 
+  String _formatDate(DateTime date) {
+    return _dateFormatter.format(date);
+  }
+
   void getImageAndSend() async {
     if (_isLoading) return;
     setState(() {
@@ -99,7 +106,7 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erreur lors de l\'importation de l\'image')),
+        SnackBar(content: Text((S.of(context).ErreurImportation))),
       );
     } finally {
       setState(() {
@@ -113,7 +120,7 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Consultation de la tâche'),
+        title: Text((S.of(context).ConsultationTitre)),
       ),
       drawer: const AppDrawer(),
       body: _isLoading
@@ -124,22 +131,22 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Nom : ${_tache.nom}',
+              '${S.of(context).NomTache}${_tache.nom}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              'Date d\'échéance : ${_tache.dateLimite}',
+              '${S.of(context).DeadlineTache}${_formatDate(_tache.dateLimite)}',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
             Text(
-              'Pourcentage de temps écoulé : ${_tache.pourcentageTemps}%',
+              '${S.of(context).TempsEcouleTache}${_tache.pourcentageTemps}%',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
             Text(
-              'Pourcentage d\'avancement : ${_tache.pourcentageAvancement.toStringAsFixed(0)}%',
+              '${S.of(context).AvancementTache}${_tache.pourcentageAvancement.toStringAsFixed(0)}%',
               style: const TextStyle(fontSize: 16),
             ),
             Slider(
@@ -164,7 +171,7 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
               padding: const EdgeInsets.symmetric(vertical: 28.0),
               child: Center(
                 child: (imageURL == "")
-                    ? Text("Importer une image en premier")
+                    ? Text(S.of(context).ImporterImageEnPremier)
                     : SizedBox(
                   width: 300,
                   height: 250,
@@ -182,7 +189,7 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
                 : Center(
                 child: ElevatedButton(
                   onPressed: getImageAndSend,
-                  child: const Text('Importer image'),
+                  child: Text(S.of(context).ImporterImage),
                 )
             ),
             Center(
@@ -191,7 +198,7 @@ class _EcranConsultationState extends State<EcranConsultation> with WidgetsBindi
                 Navigator.pushNamedAndRemoveUntil(context, '/accueil',
                       (Route<dynamic> route) => false,);
               },
-              child: const Text('Retour à l\'accueil'),
+              child: Text(S.of(context).RetourAccueil),
             )
             ),
           ],

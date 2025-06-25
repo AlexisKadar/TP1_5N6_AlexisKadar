@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tp1_2363662/transfer.dart';
 import 'package:tp1_2363662/widgets/app_drawer.dart';
 
+import 'generated/l10n.dart';
 import 'lib_http.dart';
 
 class EcranCreation extends StatefulWidget {
@@ -39,7 +40,7 @@ class _EcranCreationState extends State<EcranCreation> {
     try {
       RequeteAjoutTache req = RequeteAjoutTache();
       req.nom = _nomController.text;
-      req.dateLimite = _dateEcheance ?? DateTime.now(); // Utilisation directe de DateTime
+      req.dateLimite = _dateEcheance ?? DateTime.now();
       await ajoutTache(req);
       Navigator.pushNamedAndRemoveUntil(
         context,
@@ -48,7 +49,7 @@ class _EcranCreationState extends State<EcranCreation> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erreur lors de l\'ajout de la tâche')),
+        SnackBar(content: Text((S.of(context).ErreurAjout))),
       );
     } finally {
       setState(() {
@@ -60,7 +61,7 @@ class _EcranCreationState extends State<EcranCreation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Créer une tâche')),
+      appBar: AppBar(title: Text((S.of(context).AjoutTitre))),
       drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -68,7 +69,7 @@ class _EcranCreationState extends State<EcranCreation> {
           children: [
             TextField(
               controller: _nomController,
-              decoration: const InputDecoration(labelText: 'Nom de la tâche'),
+              decoration: InputDecoration(labelText: (S.of(context).NomTacheCreation)),
             ),
             const SizedBox(height: 16),
             Row(
@@ -76,13 +77,13 @@ class _EcranCreationState extends State<EcranCreation> {
                 Expanded(
                   child: Text(
                     _dateEcheance == null
-                        ? 'Aucune date sélectionnée'
-                        : 'Échéance : ${_dateEcheance!.day}/${_dateEcheance!.month}/${_dateEcheance!.year}',
+                        ? (S.of(context).AucuneDateSelectionnee)
+                        : '${S.of(context).DealineCreation}${_dateEcheance!.day}/${_dateEcheance!.month}/${_dateEcheance!.year}',
                   ),
                 ),
                 TextButton(
                   onPressed: () => _selectDate(context),
-                  child: const Text('Choisir la date'),
+                  child: Text((S.of(context).ChooseDate)),
                 ),
               ],
             ),
@@ -91,7 +92,7 @@ class _EcranCreationState extends State<EcranCreation> {
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
               onPressed: ajouterLaTache,
-              child: const Text('Ajouter'),
+              child: Text((S.of(context).BoutonAjouterTache)),
             ),
           ],
         ),

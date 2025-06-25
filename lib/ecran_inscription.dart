@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tp1_2363662/transfer.dart';
 import 'package:tp1_2363662/user_singleton.dart';
 
+import 'generated/l10n.dart';
 import 'lib_http.dart';
 
 class EcranInscription extends StatefulWidget {
@@ -40,35 +41,35 @@ class _EcranInscriptionState extends State<EcranInscription> {
     } on DioError catch (e) {
       if(e.response?.data == "MotsDePasseDifferents") {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Les mots de passe ne correspondent pas')),
+          SnackBar(content: Text((S.of(context).MotsDePasseDifferents))),
         );
       } else if (e.response?.data == "NomDejaPris") {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Nom d\'utilisateur déjà pris')),
+          SnackBar(content: Text((S.of(context).NomDejaPris))),
         );
       }  else if (e.response?.data == "NomTropCourt") {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Nom d\'utilisateur est trop court')),
+          SnackBar(content: Text((S.of(context).NomTropCourt))),
         );
       }
       else if (e.response?.data == "NomTropLong") {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Nom d\'utilisateur est trop long')),
+          SnackBar(content: Text((S.of(context).NomTropLong))),
         );
       }
       else if (e.response?.data == "MotDePasseTropCourt") {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Mot de passe est trop court')),
+          SnackBar(content: Text((S.of(context).MotDePasseTropCourt))),
         );
       }
       else if (e.response?.data == "MotDePasseTropLong") {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Mot de passe est trop long')),
+          SnackBar(content: Text((S.of(context).MotDePasseTropLong))),
         );
       }
       else{
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Erreur lors de l\'inscription, vérifiez votre connexion')),
+          SnackBar(content: Text((S.of(context).ErreurInscription))),
         );
       }
     } finally {
@@ -82,30 +83,30 @@ class _EcranInscriptionState extends State<EcranInscription> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(title: const Text('Inscription')),
+      appBar: AppBar(title: Text((S.of(context).Inscription))),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _usernameController,
-              decoration: const InputDecoration(
-                labelText: "Nom d'utilisateur",
+              decoration: InputDecoration(
+                labelText: (S.of(context).Username),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: "Mot de passe",
+              decoration: InputDecoration(
+                labelText: (S.of(context).Password),
               ),
               obscureText: true,
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _confirmPasswordController,
-              decoration: const InputDecoration(
-                labelText: "Confirmer le mot de passe",
+              decoration: InputDecoration(
+                labelText: (S.of(context).ConfirmezMotDePasse),
               ),
               obscureText: true,
             ),
@@ -114,7 +115,7 @@ class _EcranInscriptionState extends State<EcranInscription> {
               ? const CircularProgressIndicator()
               : ElevatedButton(
               onPressed: faireInscription,
-              child: const Text('Inscription'),
+              child: Text((S.of(context).Inscription)),
             ),
           ],
         ),

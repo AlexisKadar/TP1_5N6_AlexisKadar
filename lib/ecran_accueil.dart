@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tp1_2363662/widgets/app_drawer.dart';
 import 'ecran_consultation.dart';
+import 'generated/l10n.dart';
 import 'lib_http.dart';
 import 'transfer.dart';
 
@@ -55,7 +56,7 @@ class _EcranAccueilState extends State<EcranAccueil> with WidgetsBindingObserver
     } catch (e) {
       print('Error fetching tasks: $e');
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Erreur reseau')));
+          .showSnackBar(SnackBar(content: Text((S.of(context).ErreurReseau))));
       setState(() {
         _isLoading = false;
         _Error = true;
@@ -71,7 +72,7 @@ class _EcranAccueilState extends State<EcranAccueil> with WidgetsBindingObserver
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Accueil'),
+        title: Text((S.of(context).Accueil)),
       ),
       drawer: const AppDrawer(),
       body: _isLoading
@@ -81,7 +82,7 @@ class _EcranAccueilState extends State<EcranAccueil> with WidgetsBindingObserver
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Erreur réseau. Veuillez réessayer.'),
+            Text((S.of(context).ErreurReseau)),
             const SizedBox(height: 16),
             _isLoading
             ? const CircularProgressIndicator()
@@ -92,13 +93,13 @@ class _EcranAccueilState extends State<EcranAccueil> with WidgetsBindingObserver
                 });
                 getList();
               },
-              child: const Text('Recharger'),
+              child: Text((S.of(context).Recharger)),
             ),
           ],
         ),
       )
           : _taches.isEmpty
-          ? const Center(child: Text('Aucune tâche disponible'))
+          ? Center(child: Text((S.of(context).AucuneTache)))
           : ListView.builder(
         itemCount: _taches.length,
         itemBuilder: (context, index) {
@@ -110,11 +111,11 @@ class _EcranAccueilState extends State<EcranAccueil> with WidgetsBindingObserver
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Avancement : ${tache.pourcentageAvancement}%'),
-                  Text('Temps écoulé : ${tache.pourcentageTemps}%'),
-                  Text('Date limite : ${_formatDate(tache.dateLimite)}'),
+                  Text('${S.of(context).Avancement}${tache.pourcentageAvancement}%'),
+                  Text('${S.of(context).TempsEcoule}${tache.pourcentageTemps}%'),
+                  Text('${S.of(context).DateLimite}${_formatDate(tache.dateLimite)}'),
                   (tache.idPhoto == 0)
-                      ? Text("Aucune image")
+                      ? Text((S.of(context).AucuneImage))
                       : SizedBox(
                     width: 350,
                     height: 250,

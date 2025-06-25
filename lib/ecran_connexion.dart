@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tp1_2363662/transfer.dart';
 import 'package:tp1_2363662/user_singleton.dart';
 
+import 'generated/l10n.dart';
 import 'lib_http.dart';
 
 class EcranConnexion extends StatefulWidget {
@@ -38,11 +39,11 @@ class _EcranConnexionState extends State<EcranConnexion> {
     } on DioError catch (e) {
       if (e.response?.data == "MauvaisNomOuMotDePasse") {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Nom d\'utilisateur ou mot de passe incorrect')),
+          SnackBar(content: Text((S.of(context).MauvaisNomOuMotDePasse))),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Erreur lors de la connexion')),
+          SnackBar(content: Text((S.of(context).ErreurConnexion))),
         );
       }
 
@@ -57,22 +58,22 @@ class _EcranConnexionState extends State<EcranConnexion> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(title: const Text('Connexion')),
+      appBar: AppBar(title: Text((S.of(context).Login))),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _usernameController,
-              decoration: const InputDecoration(
-                labelText: "Nom d'utilisateur",
+              decoration: InputDecoration(
+                labelText: (S.of(context).Username),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: "Mot de passe",
+              decoration: InputDecoration(
+                labelText: (S.of(context).Password),
               ),
               obscureText: true,
             ),
@@ -81,13 +82,13 @@ class _EcranConnexionState extends State<EcranConnexion> {
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
               onPressed: faireConnexion,
-              child: const Text('Connexion'),
+              child: Text((S.of(context).Login)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/inscription');
               },
-              child: const Text('Inscription'),
+              child: Text(S.of(context).Inscription),
             ),
           ],
         ),
